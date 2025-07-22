@@ -29,7 +29,7 @@ const productSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
-    ProductName: {
+    productName: {
         type: String,
         required: true,
         trim: true,
