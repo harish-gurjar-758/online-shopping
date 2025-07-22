@@ -9,7 +9,7 @@ import db from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
-// import orderRoutes from './routes/orderRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -32,7 +32,7 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);         // Register, Login
 app.use('/api/user', userRoutes);         // User profile, update, delete
 app.use('/api/products', productRoutes);  // Create, fetch, edit, delete products
-// app.use('/api/orders', orderRoutes);      // Create, track, manage orders
+app.use('/api/orders', orderRoutes);      // Create, track, manage orders
 
 // Server Start
 app.listen(PORT, () => {
