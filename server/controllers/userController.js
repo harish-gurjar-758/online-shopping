@@ -1,57 +1,31 @@
-// user controller file 
 import User from '../models/User.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 
-//  Registore the user
-export default registerUser = async (req, res) => {
-    try {
-        const { userName, email, phone, password, role, address } = req.body;
+export const getUserProfile = async (req, res) => {
+  const user = await User.findById(req.user.id).select('-password');
+  res.status(200).json(user);
+};
 
-        const existingUser = await User.findOne({ phone }) || User.findOne({ email });
+export const updateUserProfile = async (req, res) => {
+  const user = await User.findById(req.user.id);
 
-        if (existingUser) {
-            return res.status(400).json({
-                error: "Phone number or Email already registered"
-            });
-        }
+  if (user) {
+    user.userName = req.body.userName || user.userName;
+    user.phone = req.body.phone || user.phone;
+    user.address = req.body.address || user.address;
 
-        // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+    const updatedUser = await user.save();
+    res.status(200).json(updatedUser);
+  } else {
+    res.status(404).json({ error: 'User not found' });
+  }
+};
 
+export const getAllUsers = async (req, res) => {
+  const users = await User.find().select('-password');
+  res.status(200).json(users);
+};
 
-        // Create user
-        const newUser = new User({
-            userName,
-            email,
-            phone,
-            password: hashedPassword,
-            role,
-            address
-        });
-
-        await newUser.save();
-
-        // Create JWT
-        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
-            expiresIn: '60d',
-        });
-
-
-        res.status(201).json({
-            success: true,
-            message: 'User registered successfully',
-            token,
-            user: {
-                id: newUser._id,
-                userName: newUser.userName,
-                phone: newUser.phone,
-                email: newUser.email,
-                role: newUser.role,
-                address: newUser.address
-            },
-        });
-    } catch (error) {
-        res.status(500).json({ error: 'Server error during registration', details: err.message });
-    }
+export const deleteUser = async (req, res) => {
+  await User.findByIdAndDelete(req.params.id);
+  res.status(200).json({ message: 'User deleted' });
 };
