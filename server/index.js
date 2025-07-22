@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import db from './config/db';
 
 // ---
-import authRouters from './routes/authRoutes.js';
+import {authRouters} from './routes/authRoutes.js';
 
 
 // Load environment variables
