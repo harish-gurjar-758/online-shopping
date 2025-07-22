@@ -10,7 +10,8 @@ import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
-import ratingRoutes from './routes/ratingRoutes.js'
+import ratingRoutes from './routes/ratingRoutes.js';
+import cartRoutes from './routes/cartRoutes.js'
 
 // Load environment variables from .env file
 dotenv.config();
@@ -35,6 +36,7 @@ app.use('/api/user', userRoutes);         // User profile, update, delete
 app.use('/api/products', productRoutes);  // Create, fetch, edit, delete products
 app.use('/api/orders', orderRoutes);      // Create, track, manage orders
 app.use('/api/rating', ratingRoutes);
+app.use('api/cart', cartRoutes);
 
 // Server Start
 app.listen(PORT, () => {
